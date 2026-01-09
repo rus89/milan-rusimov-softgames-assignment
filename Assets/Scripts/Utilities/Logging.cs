@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using Debug = UnityEngine.Debug;
 
-namespace Softgames.Core
+namespace Softgames.Utilities
 {
 	public static class Logging
 	{
