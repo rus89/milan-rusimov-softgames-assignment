@@ -116,7 +116,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fpsValue: {fileID: 4949142959181426237}
-  _updateInterval: 0.25
+  _updateInterval: 0.5
 --- !u!1 &6521383734654774594
 GameObject:
   m_ObjectHideFlags: 0
