@@ -27,10 +27,8 @@ namespace Softgames.Core
                 DontDestroyOnLoad(globals);
             }
 
-            var sceneService = new SceneLoaderService();
-            ServiceLocator.RegisterService(sceneService);
-            
-            await sceneService.InitializeAsync();
+            var sceneService = await InitializeSceneService();
+            await InitializeMagicWordsService();
             
             Logging.Log("Boot initialization completed.");
             
@@ -38,6 +36,23 @@ namespace Softgames.Core
             {
                 await sceneService.LoadSceneAsync("MainMenu", true);
             }
+        }
+
+        //-----------------------------------------------------------------------
+        private static async UniTask<SceneLoaderService> InitializeSceneService()
+        {
+            var sceneService = new SceneLoaderService();
+            ServiceLocator.RegisterService(sceneService);
+            await sceneService.InitializeAsync();
+            return sceneService;
+        }
+        
+        //-----------------------------------------------------------------------
+        private static async UniTask InitializeMagicWordsService()
+        {
+            var dataService = new MagicWordsService();
+            ServiceLocator.RegisterService<IMagicWordsService>(dataService);
+            await dataService.InitializeAsync();
         }
     }
 }
