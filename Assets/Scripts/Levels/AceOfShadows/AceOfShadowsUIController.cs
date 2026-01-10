@@ -1,6 +1,8 @@
+using Cysharp.Threading.Tasks;
 using Levels.AceOfShadows;
 using PrimeTween;
-using Softgames.Utilities;
+using Softgames.Core;
+using Softgames.Core.Services;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,8 +14,6 @@ namespace Softgames.Levels.AceOfShadows
 		[SerializeField] private AceOfShadowsController _aceOfShadowsController;
 		
 		[Header("Buttons")]
-		[SerializeField] private Button _startButton;
-		[SerializeField] private Button _restartButton;
 		[SerializeField] private Button _backToMenuButton;
 		
 		[Header("Counters")]
@@ -23,15 +23,48 @@ namespace Softgames.Levels.AceOfShadows
 		[SerializeField] private Slider _counterBFill;
 		[SerializeField] private TMP_Text _messageText;
 		
+		private SceneLoaderService _sceneLoaderService;
+		
 		//-----------------------------------------------------------------------
 		private void Awake()
 		{
+			_sceneLoaderService = ServiceLocator.GetService<SceneLoaderService>();
 			RegisterButtonCallbacks();
 			RegisterEventListeners();
 		}
 
 		//-----------------------------------------------------------------------
 		private void OnDestroy()
+		{
+			UnregisterButtonCallbacks();
+			UnregisterEventListeners();
+		}
+
+		//-----------------------------------------------------------------------
+		private void RegisterButtonCallbacks()
+		{
+			_backToMenuButton.onClick.AddListener(OnBackToMenuButtonClicked);
+		}
+
+		//-----------------------------------------------------------------------
+		private void RegisterEventListeners()
+		{
+			if (_aceOfShadowsController != null)
+			{
+				_aceOfShadowsController.OnStacksUpdated += UpdateCounters;
+				_aceOfShadowsController.OnGameStarted += OnGameStarted;
+				_aceOfShadowsController.OnGameFinished += OnGameFinished;
+			}
+		}
+
+		//-----------------------------------------------------------------------
+		private void UnregisterButtonCallbacks()
+		{
+			_backToMenuButton.onClick.RemoveAllListeners();
+		}
+
+		//-----------------------------------------------------------------------
+		private void UnregisterEventListeners()
 		{
 			if (_aceOfShadowsController != null)
 			{
@@ -42,43 +75,9 @@ namespace Softgames.Levels.AceOfShadows
 		}
 
 		//-----------------------------------------------------------------------
-		private void RegisterButtonCallbacks()
-		{
-			// _startButton.onClick.AddListener(OnStartButtonClicked);
-			// _restartButton.onClick.AddListener(OnRestartButtonClicked);
-			_backToMenuButton.onClick.AddListener(OnBackToMenuButtonClicked);
-		}
-
-		//-----------------------------------------------------------------------
-		private void RegisterEventListeners()
-		{
-			if (_aceOfShadowsController == null)
-			{
-				Logging.LogError("UI missing reference to Controller!");
-				return;
-			}
-			
-			_aceOfShadowsController.OnStacksUpdated += UpdateCounters;
-			_aceOfShadowsController.OnGameStarted += OnGameStarted;
-			_aceOfShadowsController.OnGameFinished += OnGameFinished;
-		}
-
-		//-----------------------------------------------------------------------
-		private void OnStartButtonClicked()
-		{
-			
-		}
-
-		//-----------------------------------------------------------------------
-		private void OnRestartButtonClicked()
-		{
-			
-		}
-
-		//-----------------------------------------------------------------------
 		private void OnBackToMenuButtonClicked()
 		{
-			
+			_sceneLoaderService.LoadSceneAsync("MainMenu").Forget();
 		}
 		
 		//-----------------------------------------------------------------------
