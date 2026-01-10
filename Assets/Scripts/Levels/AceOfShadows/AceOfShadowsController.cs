@@ -24,6 +24,21 @@ namespace Levels.AceOfShadows
         private readonly Stack<CardView> _stackA = new();
         private readonly Stack<CardView> _stackB = new();
         
+#if UNITY_EDITOR
+        [Header("Debug / Testing")]
+        [SerializeField, Range(1f, 100f)] private float _simulationSpeed = 1f;
+        
+        private float TimeMultiplier => _simulationSpeed;
+        
+        [ContextMenu("Finish Immediately")]
+        public void DebugFinishImmediately()
+        {
+            _simulationSpeed = 100f;
+        }
+#else
+        private float TimeMultiplier => 1f; 
+#endif
+        
         //-----------------------------------------------------------------------
         private void Start()
         {
@@ -35,6 +50,8 @@ namespace Levels.AceOfShadows
         private void InitializeStacks()
         {
             _messageText.text = "";
+            _stackA.Clear();
+            _stackB.Clear();
             
             for (int i = 0; i < _totalCards; i++)
             {
@@ -79,7 +96,9 @@ namespace Levels.AceOfShadows
             var targetPosition = stackBPos.position + (_stackOffset * newIndexInStackB);
             card.SetCardSortingOrder(999);
             
-            await Tween.Position(card.transform, targetPosition, _moveDuration, Ease.InOutQuad)
+            float actualDuration = _moveDuration / TimeMultiplier;
+            
+            await Tween.Position(card.transform, targetPosition, actualDuration, Ease.InOutQuad)
                        .ToYieldInstruction()
                        .ToUniTask(cancellationToken: this.GetCancellationTokenOnDestroy());
             
@@ -89,13 +108,16 @@ namespace Levels.AceOfShadows
             
             UpdateCounters();
             
-            await UniTask.Delay(100, cancellationToken: this.GetCancellationTokenOnDestroy());
+            int delayMs = (int)(100 / TimeMultiplier); 
+            delayMs = Mathf.Max(1, delayMs); 
+            await UniTask.Delay(delayMs, cancellationToken: this.GetCancellationTokenOnDestroy());
         }
 
         //-----------------------------------------------------------------------
         private void OnGameComplete()
         {
             _messageText.text = "All cards moved!";
+            _messageText.alpha = 1f;
         }
     }
 }
