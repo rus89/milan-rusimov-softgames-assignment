@@ -16,10 +16,23 @@ namespace Softgames.MainMenu
 		private ISceneLoaderService _sceneLoaderService;
 
 		//-----------------------------------------------------------------------
+		private void Awake()
+		{
+			RegisterButtonListeners();
+		}
+
+		//-----------------------------------------------------------------------
 		private void Start()
 		{
 			_sceneLoaderService = ServiceLocator.GetService<SceneLoaderService>();
-			RegisterButtonListeners();
+		}
+
+		//-----------------------------------------------------------------------
+		private void OnDestroy()
+		{
+			_task1Button.onClick.RemoveAllListeners();
+			_task2Button.onClick.RemoveAllListeners();
+			_task3Button.onClick.RemoveAllListeners();
 		}
 
 		//-----------------------------------------------------------------------
