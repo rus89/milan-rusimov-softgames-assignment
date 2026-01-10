@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using Debug = UnityEngine.Debug;
 
@@ -21,6 +22,12 @@ namespace Softgames.Utilities
 		public static void LogError(string message)
 		{
 			Debug.LogError($"[Softgames ERROR] {message}");
+		}
+
+		[Conditional("DEBUG")]
+		public static void LogException(Exception exception)
+		{
+			Debug.LogException(new Exception($"[Softgames EXCEPTION] {exception}"));
 		}
 	}
 }
