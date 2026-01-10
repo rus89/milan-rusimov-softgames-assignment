@@ -1,13 +1,17 @@
+using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using PrimeTween;
-using TMPro;
 using UnityEngine;
 
 namespace Levels.AceOfShadows
 {
     public class AceOfShadowsController : MonoBehaviour
     {
+        public event Action<int, int> OnStacksUpdated;
+        public event Action OnGameStarted;
+        public event Action OnGameFinished;
+        
         [Header("Configuration")]
         [SerializeField] private GameObject _cardPrefab;
         [SerializeField] private int _totalCards;
@@ -17,9 +21,6 @@ namespace Levels.AceOfShadows
         [Header("References")]
         [SerializeField] private Transform _stackAPos;
         [SerializeField] private Transform _stackBPos;
-        [SerializeField] private TMP_Text _counterA;
-        [SerializeField] private TMP_Text _counterB;
-        [SerializeField] private TMP_Text _messageText;
         
         private readonly Stack<CardView> _stackA = new();
         private readonly Stack<CardView> _stackB = new();
@@ -49,7 +50,6 @@ namespace Levels.AceOfShadows
         //-----------------------------------------------------------------------
         private void InitializeStacks()
         {
-            _messageText.text = "";
             _stackA.Clear();
             _stackB.Clear();
             
@@ -71,14 +71,14 @@ namespace Levels.AceOfShadows
         //-----------------------------------------------------------------------
         private void UpdateCounters()
         {
-            _counterA.text = $"Stack A: {_stackA.Count}";
-            _counterB.text = $"Stack B: {_stackB.Count}";
+            OnStacksUpdated?.Invoke(_stackA.Count, _stackB.Count);
         }
 
         //-----------------------------------------------------------------------
         private async UniTask RunGameLoop()
         {
             await UniTask.Delay(1000, cancellationToken: this.GetCancellationTokenOnDestroy());
+            OnGameStarted?.Invoke();
             
             while (_stackA.Count > 0)
             {
@@ -116,8 +116,7 @@ namespace Levels.AceOfShadows
         //-----------------------------------------------------------------------
         private void OnGameComplete()
         {
-            _messageText.text = "All cards moved!";
-            _messageText.alpha = 1f;
+            OnGameFinished?.Invoke();
         }
     }
 }

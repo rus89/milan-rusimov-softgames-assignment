@@ -271,17 +271,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _camera: {fileID: 35114457}
   _targetWidth: 10
---- !u!114 &610249205 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7250720649904062833, guid: c1c318d860cab4832b0b83ae8dcd9111, type: 3}
-  m_PrefabInstance: {fileID: 5083031577707240329}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &658631622
 GameObject:
   m_ObjectHideFlags: 0
@@ -344,17 +333,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &839350328 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3429368671496038149, guid: c1c318d860cab4832b0b83ae8dcd9111, type: 3}
-  m_PrefabInstance: {fileID: 5083031577707240329}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &994324918
 GameObject:
   m_ObjectHideFlags: 0
@@ -390,9 +368,7 @@ MonoBehaviour:
   _stackOffset: {x: 0, y: 0.05, z: 0}
   _stackAPos: {fileID: 1479496306}
   _stackBPos: {fileID: 1843164590}
-  _counterA: {fileID: 610249205}
-  _counterB: {fileID: 839350328}
-  _messageText: {fileID: 1327345521}
+  _simulationSpeed: 1
 --- !u!4 &994324920
 Transform:
   m_ObjectHideFlags: 0
@@ -408,17 +384,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1327345521 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7395775695629796981, guid: c1c318d860cab4832b0b83ae8dcd9111, type: 3}
-  m_PrefabInstance: {fileID: 5083031577707240329}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1479496306 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2821588593485065640, guid: 937e3be36b70f41268710d29e1a5fd5a, type: 3}
@@ -662,6 +627,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7418410341312355472, guid: c1c318d860cab4832b0b83ae8dcd9111, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7418410341312355472, guid: c1c318d860cab4832b0b83ae8dcd9111, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8227809257893414457, guid: c1c318d860cab4832b0b83ae8dcd9111, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8227809257893414457, guid: c1c318d860cab4832b0b83ae8dcd9111, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8320894327449228090, guid: c1c318d860cab4832b0b83ae8dcd9111, type: 3}
+      propertyPath: _aceOfShadowsController
+      value: 
+      objectReference: {fileID: 994324919}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
