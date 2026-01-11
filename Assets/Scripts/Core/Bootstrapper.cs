@@ -42,7 +42,7 @@ namespace Softgames.Core
         private static async UniTask<SceneLoaderService> InitializeSceneService()
         {
             var sceneService = new SceneLoaderService();
-            ServiceLocator.RegisterService(sceneService);
+            ServiceLocator.RegisterService<ISceneLoaderService>(sceneService);
             await sceneService.InitializeAsync();
             return sceneService;
         }

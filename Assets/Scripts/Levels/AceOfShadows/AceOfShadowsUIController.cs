@@ -23,12 +23,12 @@ namespace Softgames.Levels.AceOfShadows
 		[SerializeField] private Slider _counterBFill;
 		[SerializeField] private TMP_Text _messageText;
 		
-		private SceneLoaderService _sceneLoaderService;
+		private ISceneLoaderService _sceneLoaderService;
 		
 		//-----------------------------------------------------------------------
 		private void Awake()
 		{
-			_sceneLoaderService = ServiceLocator.GetService<SceneLoaderService>();
+			_sceneLoaderService = ServiceLocator.GetService<ISceneLoaderService>();
 			RegisterButtonCallbacks();
 			RegisterEventListeners();
 		}

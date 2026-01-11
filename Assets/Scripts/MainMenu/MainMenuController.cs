@@ -24,7 +24,7 @@ namespace Softgames.MainMenu
 		//-----------------------------------------------------------------------
 		private void Start()
 		{
-			_sceneLoaderService = ServiceLocator.GetService<SceneLoaderService>();
+			_sceneLoaderService = ServiceLocator.GetService<ISceneLoaderService>();
 		}
 
 		//-----------------------------------------------------------------------
