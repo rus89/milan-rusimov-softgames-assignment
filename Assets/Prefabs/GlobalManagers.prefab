@@ -120,9 +120,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4231859173290173856, guid: cb52ecc5f28e44088aa536aa166ba85b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -26.348877
+      objectReference: {fileID: 0}
     - target: {fileID: 4489684446520952460, guid: cb52ecc5f28e44088aa536aa166ba85b, type: 3}
       propertyPath: m_Name
-      value: FPSCounter
+      value: GlobalUI
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
