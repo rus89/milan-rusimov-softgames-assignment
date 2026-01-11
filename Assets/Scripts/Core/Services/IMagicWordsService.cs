@@ -5,6 +5,6 @@ namespace Softgames.Core.Services
 {
 	public interface IMagicWordsService
 	{
-		UniTask<MagicWordsData[]> GetMagicWordsAsync();
+		UniTask<ChatDisplayData[]> GetMagicWordsAsync();
 	}
 }

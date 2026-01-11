@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Softgames.Levels.MagicWords.Data;
 using Softgames.Utilities;
@@ -18,34 +19,65 @@ namespace Softgames.Core.Services
 		}
 		
 		//-----------------------------------------------------------------------
-		public async UniTask<Levels.MagicWords.Data.MagicWordsData[]> GetMagicWordsAsync()
+		public async UniTask<ChatDisplayData[]> GetMagicWordsAsync()
 		{
 			using var request = UnityWebRequest.Get(API_URL);
 			try
 			{
-				await request.SendWebRequest();
+				await request.SendWebRequest().ToUniTask();
 
 				if (request.result != UnityWebRequest.Result.Success)
 				{
 					Logging.LogError($"API Error: {request.error}");
-					return Array.Empty<MagicWordsData>();
+					return Array.Empty<ChatDisplayData>();
 				}
 
 				string json = request.downloadHandler.text;
 				var response = JsonUtility.FromJson<MagicWordsResponse>(json);
 				
-				if (response?.data == null)
+				if (response?.dialogue == null)
 				{
-					Logging.LogWarning("API returned valid JSON but empty structure.");
-					return Array.Empty<MagicWordsData>();
+					Logging.LogWarning("API returned valid JSON but missing 'dialogues' array.");
+					return Array.Empty<ChatDisplayData>();
+				}
+				
+				var avatarMap = new Dictionary<string, AvatarData>();
+				if (response.avatars != null)
+				{
+					foreach (var av in response.avatars)
+					{
+						avatarMap.TryAdd(av.name, av);
+					}
+				}
+				
+				var resultList = new List<ChatDisplayData>();
+
+				foreach (var line in response.dialogue)
+				{
+					string url = "";
+					bool isRight = false;
+					
+					if (avatarMap.TryGetValue(line.name, out var avatarInfo))
+					{
+						url = avatarInfo.url;
+						isRight = avatarInfo.position == "right";
+					}
+
+					resultList.Add(new ChatDisplayData
+					{
+						CharacterName = line.name,
+						Text = line.text,
+						AvatarUrl = url,
+						IsRightAligned = isRight
+					});
 				}
 
-				return response.data;
+				return resultList.ToArray();
 			}
 			catch (Exception e)
 			{
 				Logging.LogException(e);
-				return Array.Empty<MagicWordsData>();
+				return Array.Empty<ChatDisplayData>();
 			}
 		}
 	}

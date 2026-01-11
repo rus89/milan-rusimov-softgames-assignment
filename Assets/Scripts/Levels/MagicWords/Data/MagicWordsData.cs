@@ -5,14 +5,30 @@ namespace Softgames.Levels.MagicWords.Data
 	[Serializable]
 	public class MagicWordsResponse
 	{
-		public MagicWordsData[] data;
+		public DialogueData[] dialogue;
+		public AvatarData[] avatars;
 	}
 	
 	[Serializable]
-	public class MagicWordsData
+	public class DialogueData
 	{
-		public string character;
+		public string name;
 		public string text;
-		public string avatar;
+	}
+	
+	[Serializable]
+	public class AvatarData
+	{
+		public string name;
+		public string url;
+		public string position;
+	}
+	
+	public class ChatDisplayData
+	{
+		public string CharacterName;
+		public string Text;
+		public string AvatarUrl;
+		public bool IsRightAligned;
 	}
 }
