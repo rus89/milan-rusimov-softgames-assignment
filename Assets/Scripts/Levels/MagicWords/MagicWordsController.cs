@@ -61,7 +61,8 @@ namespace Softgames.Levels.MagicWords
 
             var bubbleObj = Instantiate(_bubblePrefab, _contentContainer);
             var parsedText = EmojiParser.ParseEmotions(text);
-            bubbleObj.Configure(characterName, parsedText, data.AvatarUrl, data.IsRightAligned);
+            var imageTask = _dataService.GetAvatarTextureAsync(data.AvatarUrl);
+            bubbleObj.Configure(characterName, parsedText, imageTask, data.IsRightAligned);
         }
 
         //-----------------------------------------------------------------------

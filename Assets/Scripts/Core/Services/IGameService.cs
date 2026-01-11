@@ -4,6 +4,6 @@ namespace Softgames.Core.Services
 {
 	public interface IGameService
 	{
-		UniTask InitializeAsync();
+		public UniTask InitializeAsync();
 	}
 }

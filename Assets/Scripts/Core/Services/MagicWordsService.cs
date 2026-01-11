@@ -11,6 +11,7 @@ namespace Softgames.Core.Services
 	public class MagicWordsService : IMagicWordsService
 	{
 		private const string API_URL = "https://private-624120-softgamesassignment.apiary-mock.com/v3/magicwords";
+		private readonly Dictionary<string, Texture2D> _avatarTextures = new();
 		
 		//-----------------------------------------------------------------------
 		public UniTask InitializeAsync()
@@ -34,29 +35,36 @@ namespace Softgames.Core.Services
 
 				string json = request.downloadHandler.text;
 				var response = JsonUtility.FromJson<MagicWordsResponse>(json);
-				
+
 				if (response?.dialogue == null)
 				{
 					Logging.LogWarning("API returned valid JSON but missing 'dialogues' array.");
 					return Array.Empty<ChatDisplayData>();
 				}
-				
+
 				var avatarMap = new Dictionary<string, AvatarData>();
 				if (response.avatars != null)
 				{
-					foreach (var av in response.avatars)
+					foreach (var avatarEntry in response.avatars)
 					{
-						avatarMap.TryAdd(av.name, av);
+						bool isBrokenUrl = avatarEntry.url.Contains("timeout");
+    
+						if (isBrokenUrl)
+						{
+							continue;
+						}
+						
+						avatarMap[avatarEntry.name] = avatarEntry;
 					}
 				}
-				
+
 				var resultList = new List<ChatDisplayData>();
 
 				foreach (var line in response.dialogue)
 				{
 					string url = "";
 					bool isRight = false;
-					
+
 					if (avatarMap.TryGetValue(line.name, out var avatarInfo))
 					{
 						url = avatarInfo.url;
@@ -78,6 +86,42 @@ namespace Softgames.Core.Services
 			{
 				Logging.LogException(e);
 				return Array.Empty<ChatDisplayData>();
+			}
+		}
+		
+		//-----------------------------------------------------------------------
+		public async UniTask<Texture2D> GetAvatarTextureAsync(string url)
+		{
+			if (string.IsNullOrEmpty(url))
+			{
+				Logging.LogWarning("Avatar URL is null or empty.");
+				return null;
+			}
+			
+			if (_avatarTextures.TryGetValue(url, out var cachedTexture))
+			{
+				return cachedTexture;
+			}
+			
+			using var request = UnityWebRequestTexture.GetTexture(url);
+			try
+			{
+				await request.SendWebRequest();
+            
+				if (request.result == UnityWebRequest.Result.Success)
+				{
+					var texture = DownloadHandlerTexture.GetContent(request);
+					_avatarTextures[url] = texture;
+					return texture;
+				}
+
+				Logging.LogWarning($"Failed to load avatar: {url}");
+				return null;
+			}
+			catch
+			{
+				Logging.LogError($"Failed to load avatar: {url}");
+				return null;
 			}
 		}
 	}
