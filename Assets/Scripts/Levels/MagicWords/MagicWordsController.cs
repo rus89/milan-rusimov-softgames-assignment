@@ -4,6 +4,7 @@ using Softgames.Core.Services;
 using Softgames.Levels.MagicWords.Data;
 using Softgames.Utilities;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Softgames.Levels.MagicWords
 {
@@ -14,14 +15,35 @@ namespace Softgames.Levels.MagicWords
         [SerializeField] private Transform _contentContainer;
         [SerializeField] private GameObject _loadingSpinner;
         [SerializeField] private GameObject _errorPanel;
+        [SerializeField] private Button _backButton;
 
         private IMagicWordsService _dataService;
+        private ISceneLoaderService _sceneLoaderService;
+        
+        //-----------------------------------------------------------------------
+        private void Awake()
+        {
+            _backButton.onClick.AddListener(LoadMainMenuAsync);
+        }
+
+        //-----------------------------------------------------------------------
+        private void OnDestroy()
+        {
+            _backButton.onClick.RemoveAllListeners();
+        }
 
         //-----------------------------------------------------------------------
         private void Start()
         {
             _dataService = ServiceLocator.GetService<IMagicWordsService>();
+            _sceneLoaderService = ServiceLocator.GetService<ISceneLoaderService>();
             LoadChatSequence().Forget();
+        }
+
+        //-----------------------------------------------------------------------
+        private void LoadMainMenuAsync()
+        {
+            _sceneLoaderService.LoadSceneAsync("MainMenu").Forget();
         }
 
         //-----------------------------------------------------------------------
