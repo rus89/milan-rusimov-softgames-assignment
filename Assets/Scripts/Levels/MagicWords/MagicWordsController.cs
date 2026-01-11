@@ -60,7 +60,8 @@ namespace Softgames.Levels.MagicWords
             string text = string.IsNullOrEmpty(data.Text) ? "..." : data.Text;
 
             var bubbleObj = Instantiate(_bubblePrefab, _contentContainer);
-            bubbleObj.Configure(characterName, text, data.AvatarUrl, data.IsRightAligned);
+            var parsedText = EmojiParser.ParseEmotions(text);
+            bubbleObj.Configure(characterName, parsedText, data.AvatarUrl, data.IsRightAligned);
         }
 
         //-----------------------------------------------------------------------
