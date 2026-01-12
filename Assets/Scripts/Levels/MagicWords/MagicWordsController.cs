@@ -18,6 +18,7 @@ namespace Softgames.Levels.MagicWords
 
         private IMagicWordsService _dataService;
         private ISceneLoaderService _sceneLoaderService;
+        private IAudioService _audioService;
         
         //-----------------------------------------------------------------------
         private void Awake()
@@ -36,12 +37,15 @@ namespace Softgames.Levels.MagicWords
         {
             _dataService = ServiceLocator.GetService<IMagicWordsService>();
             _sceneLoaderService = ServiceLocator.GetService<ISceneLoaderService>();
+            _audioService = ServiceLocator.GetService<IAudioService>();
+            _audioService.PlayMusic("levelMusic");
             LoadChatSequence().Forget();
         }
 
         //-----------------------------------------------------------------------
         private void LoadMainMenuAsync()
         {
+            _audioService.PlaySFX("buttonClick");
             _sceneLoaderService.LoadSceneAsync("MainMenu").Forget();
         }
 
@@ -83,6 +87,7 @@ namespace Softgames.Levels.MagicWords
             var bubbleObj = Instantiate(_bubblePrefab, _contentContainer);
             var parsedText = EmojiParser.ParseEmotions(text);
             var imageTask = _dataService.GetAvatarTextureAsync(data.AvatarUrl);
+            _audioService.PlaySFX("chatBubble");
             bubbleObj.Configure(characterName, parsedText, imageTask, data.IsRightAligned);
         }
 

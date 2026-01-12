@@ -29,16 +29,14 @@ namespace Softgames.Levels.PhoenixFlame
         private static readonly int ColorStateHash = Animator.StringToHash("ColorState");
         
         private ISceneLoaderService _sceneLoader;
+        private IAudioService _audioService;
 
         //-------------------------------------------------------------------------
         private void Awake()
         {
-            _sceneLoader = ServiceLocator.GetService<ISceneLoaderService>();
-            _changeColorButton.onClick.AddListener(OnChangeColorClicked);
-            _backButton.onClick.AddListener(LoadMainMenu);
-            _animator = GetComponent<Animator>();
-            _targetColor = _orangeColor;
-            _currentColor = _orangeColor;
+            InitializeServices();
+            RegisterButtonEvents();
+            InitializeAnimatorAndColors();
         }
 
         //-------------------------------------------------------------------------
@@ -64,8 +62,32 @@ namespace Softgames.Levels.PhoenixFlame
         }
 
         //-------------------------------------------------------------------------
+        private void InitializeServices()
+        {
+            _sceneLoader = ServiceLocator.GetService<ISceneLoaderService>();
+            _audioService = ServiceLocator.GetService<IAudioService>();
+            _audioService.PlayMusic("levelMusic");
+        }
+
+        //-------------------------------------------------------------------------
+        private void RegisterButtonEvents()
+        {
+            _changeColorButton.onClick.AddListener(OnChangeColorClicked);
+            _backButton.onClick.AddListener(LoadMainMenu);
+        }
+
+        //-------------------------------------------------------------------------
+        private void InitializeAnimatorAndColors()
+        {
+            _animator = GetComponent<Animator>();
+            _targetColor = _orangeColor;
+            _currentColor = _orangeColor;
+        }
+
+        //-------------------------------------------------------------------------
         private void OnChangeColorClicked()
         {
+            _audioService.PlaySFX("buttonClick");
             int currentState = _animator.GetInteger(ColorStateHash);
             int nextState = (currentState + 1) % 3;
             
@@ -86,6 +108,7 @@ namespace Softgames.Levels.PhoenixFlame
         //-------------------------------------------------------------------------
         private void LoadMainMenu()
         {
+            _audioService.PlaySFX("buttonClick");
             _sceneLoader.LoadSceneAsync("MainMenu").Forget();
         }
     }

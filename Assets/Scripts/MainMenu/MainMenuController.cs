@@ -13,6 +13,7 @@ namespace Softgames.MainMenu
 		[SerializeField] private Button _task3Button;
 		
 		private ISceneLoaderService _sceneLoaderService;
+		private IAudioService _audioService;
 
 		//-----------------------------------------------------------------------
 		private void Awake()
@@ -24,6 +25,8 @@ namespace Softgames.MainMenu
 		private void Start()
 		{
 			_sceneLoaderService = ServiceLocator.GetService<ISceneLoaderService>();
+			_audioService = ServiceLocator.GetService<IAudioService>();
+			_audioService.PlayMusic("mainMenuMusic");
 		}
 
 		//-----------------------------------------------------------------------
@@ -45,6 +48,7 @@ namespace Softgames.MainMenu
 		//-----------------------------------------------------------------------
 		private void LoadScene(string sceneName)
 		{
+			_audioService.PlaySFX("buttonClick");
 			_task1Button.interactable = false;
 			_task2Button.interactable = false;
 			_task3Button.interactable = false;

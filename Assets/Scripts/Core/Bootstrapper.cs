@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using Softgames.Core.Audio;
 using Softgames.Core.Services;
 using Softgames.Utilities;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace Softgames.Core
         [SerializeField] private GameObject _globalManagersPrefab;
         
         private CanvasGroup _fadeOverlayCanvasGroup;
+        private AudioProvider _audioProvider;
 
         //-----------------------------------------------------------------------
         private void Start()
@@ -26,6 +28,7 @@ namespace Softgames.Core
             InitializeGlobalManagers();
 
             var sceneLoaderService = await InitializeSceneLoaderService();
+            await InitializeAudioService();
             await InitializeMagicWordsService();
             
             Logging.Log("Boot initialization completed.");
@@ -52,6 +55,12 @@ namespace Softgames.Core
                 {
                     _fadeOverlayCanvasGroup = fadeOverlay;
                 }
+                
+                var audioProvider = globals.GetComponentInChildren<AudioProvider>(true);
+                if (audioProvider != null)
+                {
+                    _audioProvider = audioProvider;
+                }
             }
         }
 
@@ -66,6 +75,20 @@ namespace Softgames.Core
                 sceneLoaderService.SetFadeOverlayCanvasGroup(_fadeOverlayCanvasGroup);
             }
             return sceneLoaderService;
+        }
+        
+        //-----------------------------------------------------------------------
+        private async UniTask InitializeAudioService()
+        {
+            var audioService = new AudioService();
+
+            if (_audioProvider != null)
+            {
+                audioService.SetUp(_audioProvider._musicSource, _audioProvider._sfxSource, _audioProvider. _musicDatabase, _audioProvider._sfxDatabase);
+            }
+            
+            ServiceLocator.RegisterService<IAudioService>(audioService);
+            await audioService.InitializeAsync();
         }
         
         //-----------------------------------------------------------------------

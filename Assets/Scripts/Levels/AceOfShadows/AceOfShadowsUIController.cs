@@ -23,11 +23,13 @@ namespace Softgames.Levels.AceOfShadows
 		[SerializeField] private TMP_Text _messageText;
 		
 		private ISceneLoaderService _sceneLoaderService;
+		private IAudioService _audioService;
 		
 		//-----------------------------------------------------------------------
 		private void Awake()
 		{
 			_sceneLoaderService = ServiceLocator.GetService<ISceneLoaderService>();
+			_audioService = ServiceLocator.GetService<IAudioService>();
 			RegisterButtonCallbacks();
 			RegisterEventListeners();
 		}
@@ -76,6 +78,7 @@ namespace Softgames.Levels.AceOfShadows
 		//-----------------------------------------------------------------------
 		private void OnBackToMenuButtonClicked()
 		{
+			_audioService.PlaySFX("buttonClick");
 			_sceneLoaderService.LoadSceneAsync("MainMenu").Forget();
 		}
 		

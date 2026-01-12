@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using PrimeTween;
+using Softgames.Core.Services;
 using UnityEngine;
 
 namespace Levels.AceOfShadows
@@ -25,6 +26,8 @@ namespace Levels.AceOfShadows
         private readonly Stack<CardView> _stackA = new();
         private readonly Stack<CardView> _stackB = new();
         
+        private IAudioService _audioService;
+        
 #if UNITY_EDITOR
         [Header("Debug / Testing")]
         [SerializeField, Range(1f, 100f)] private float _simulationSpeed = 1f;
@@ -43,6 +46,8 @@ namespace Levels.AceOfShadows
         //-----------------------------------------------------------------------
         private void Start()
         {
+            _audioService = ServiceLocator.GetService<IAudioService>();
+            _audioService.PlayMusic("levelMusic");
             InitializeStacks();
             RunGameLoop().Forget();
         }
@@ -98,6 +103,7 @@ namespace Levels.AceOfShadows
             
             float actualDuration = _moveDuration / TimeMultiplier;
             
+            _audioService.PlaySFX("cardMove");
             await Tween.Position(card.transform, targetPosition, actualDuration, Ease.InOutQuad)
                        .ToYieldInstruction()
                        .ToUniTask(cancellationToken: this.GetCancellationTokenOnDestroy());
@@ -116,6 +122,7 @@ namespace Levels.AceOfShadows
         //-----------------------------------------------------------------------
         private void OnGameComplete()
         {
+            _audioService.PlaySFX("gameComplete");
             OnGameFinished?.Invoke();
         }
     }
