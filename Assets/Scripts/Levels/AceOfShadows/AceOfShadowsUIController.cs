@@ -22,6 +22,12 @@ namespace Softgames.Levels.AceOfShadows
 		[SerializeField] private Slider _counterBFill;
 		[SerializeField] private TMP_Text _messageText;
 		
+		[Header("Images")]
+		[SerializeField] private Image _stackAImage;
+		[SerializeField] private Image _stackBImage;
+		[SerializeField] private Sprite _regularStackSprite;
+		[SerializeField] private Sprite _fullStackSprite;
+		
 		private ISceneLoaderService _sceneLoaderService;
 		private IAudioService _audioService;
 		
@@ -85,6 +91,18 @@ namespace Softgames.Levels.AceOfShadows
 		//-----------------------------------------------------------------------
 		private void UpdateCounters(int countA, int countB)
 		{
+			_stackAImage.sprite = _regularStackSprite;
+			_stackBImage.sprite = _regularStackSprite;
+			if (countA == 144)
+			{
+				_stackAImage.sprite = _fullStackSprite;
+			}
+			
+			if (countB == 144)
+			{
+				_stackBImage.sprite = _fullStackSprite;
+			}
+			
 			_counterAFill.value = countA;
 			_counterBFill.value = countB;
 			_counterA.text = $"{countA}/144";

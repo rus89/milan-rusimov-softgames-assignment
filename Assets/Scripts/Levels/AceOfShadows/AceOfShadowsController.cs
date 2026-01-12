@@ -62,11 +62,8 @@ namespace Levels.AceOfShadows
             {
                 var cardObj = Instantiate(_cardPrefab, _stackAPos);
                 var cardView = cardObj.GetComponent<CardView>();
-                
                 cardObj.transform.position = _stackAPos.position + (_stackOffset * i);
-                
                 cardView.SetCardSortingOrder(i);
-                
                 _stackA.Push(cardView);
             }
             
