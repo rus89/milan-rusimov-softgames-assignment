@@ -12,7 +12,12 @@ namespace Softgames.Levels.MagicWords
         [SerializeField] private TMP_Text _nameText;
         [SerializeField] private TMP_Text _messageText;
         [SerializeField] private RawImage _avatarImage;
-        [SerializeField] private RectTransform _bubbleContainer;
+        [SerializeField] private Image _bubbleContainer;
+        
+        [Header("Layout")]
+        [SerializeField] private RectTransform _avatarContainer;
+        [SerializeField] private RectTransform _messageContainer;
+        [SerializeField] private HorizontalLayoutGroup _rootLayout;
 
         [Header("Styling")]
         [SerializeField] private Color _colorLeft = new(0.9f, 0.9f, 0.9f);
@@ -24,10 +29,21 @@ namespace Softgames.Levels.MagicWords
             _nameText.text = characterName;
             _messageText.text = message;
 
-            var bgImage = _bubbleContainer.GetComponent<Image>();
-            if (bgImage)
+            _bubbleContainer.color = isRightAligned ? _colorRight : _colorLeft;
+            
+            if (isRightAligned)
             {
-                bgImage.color = isRightAligned ? _colorRight : _colorLeft;
+                _rootLayout.childAlignment = TextAnchor.UpperRight;
+                _messageText.alignment = TextAlignmentOptions.MidlineRight;
+                _nameText.alignment = TextAlignmentOptions.Right;
+                _avatarContainer.SetAsLastSibling();
+            }
+            else
+            {
+                _rootLayout.childAlignment = TextAnchor.UpperLeft;
+                _messageText.alignment = TextAlignmentOptions.MidlineLeft;
+                _nameText.alignment = TextAlignmentOptions.Left;
+                _avatarContainer.SetAsFirstSibling();
             }
             
             LoadAvatarFromTask(avatarTask).Forget();
