@@ -16,6 +16,8 @@ namespace Softgames.Levels.MagicWords
         [SerializeField] private GameObject _errorPanel;
         [SerializeField] private Button _backButton;
 
+        private Button _retryButton;
+        
         private IMagicWordsService _dataService;
         private ISceneLoaderService _sceneLoaderService;
         private IAudioService _audioService;
@@ -24,12 +26,21 @@ namespace Softgames.Levels.MagicWords
         private void Awake()
         {
             _backButton.onClick.AddListener(LoadMainMenuAsync);
+            _retryButton = _errorPanel.GetComponentInChildren<Button>(true);
+            if (_retryButton != null)
+            {
+                _retryButton.onClick.AddListener(OnRetryClicked);
+            }
         }
 
         //-----------------------------------------------------------------------
         private void OnDestroy()
         {
             _backButton.onClick.RemoveAllListeners();
+            if (_retryButton != null)
+            {
+                _retryButton.onClick.RemoveAllListeners();
+            }
         }
 
         //-----------------------------------------------------------------------
@@ -101,8 +112,9 @@ namespace Softgames.Levels.MagicWords
         }
         
         //-----------------------------------------------------------------------
-        public void OnRetryClicked()
+        private void OnRetryClicked()
         {
+            _audioService.PlaySFX("buttonClick");
             LoadChatSequence().Forget();
         }
     }

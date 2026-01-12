@@ -115,7 +115,7 @@ namespace Softgames.Core.Services
 					return texture;
 				}
 
-				Logging.LogWarning($"Failed to load avatar: {url}");
+				Logging.LogError($"Failed to load avatar: {url}");
 				return null;
 			}
 			catch
