@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8348826784448312277}
   - component: {fileID: 3848617918897424409}
   - component: {fileID: 2895967494075123103}
+  - component: {fileID: 21048549444170197}
   m_Layer: 5
   m_Name: Button_Ok
   m_TagString: Untagged
@@ -121,6 +122,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &21048549444170197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 242130225272941468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d6875d1a452c4d6a99d683cdc558fc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pressedScale: 0.92
+  _duration: 0.1
 --- !u!1 &1165058183735258147
 GameObject:
   m_ObjectHideFlags: 0
