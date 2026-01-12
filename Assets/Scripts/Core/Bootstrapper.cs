@@ -9,6 +9,8 @@ namespace Softgames.Core
     {
         [SerializeField] private bool _loadMenuOnStart = true;
         [SerializeField] private GameObject _globalManagersPrefab;
+        
+        private CanvasGroup _fadeOverlayCanvasGroup;
 
         //-----------------------------------------------------------------------
         private void Start()
@@ -21,30 +23,49 @@ namespace Softgames.Core
         {
             Logging.Log("Starting boot initialization...");
 
-            if (_globalManagersPrefab != null)
-            {
-                var globals = Instantiate(_globalManagersPrefab);
-                DontDestroyOnLoad(globals);
-            }
+            InitializeGlobalManagers();
 
-            var sceneService = await InitializeSceneService();
+            var sceneLoaderService = await InitializeSceneLoaderService();
             await InitializeMagicWordsService();
             
             Logging.Log("Boot initialization completed.");
             
             if (_loadMenuOnStart)
             {
-                await sceneService.LoadSceneAsync("MainMenu", true);
+                if (sceneLoaderService != null)
+                {
+                    await sceneLoaderService.LoadSceneAsync("MainMenu", true);
+                }
             }
         }
 
         //-----------------------------------------------------------------------
-        private static async UniTask<SceneLoaderService> InitializeSceneService()
+        private void InitializeGlobalManagers()
         {
-            var sceneService = new SceneLoaderService();
-            ServiceLocator.RegisterService<ISceneLoaderService>(sceneService);
-            await sceneService.InitializeAsync();
-            return sceneService;
+            if (_globalManagersPrefab != null)
+            {
+                var globals = Instantiate(_globalManagersPrefab);
+                DontDestroyOnLoad(globals);
+                
+                var fadeOverlay = globals.GetComponentInChildren<CanvasGroup>(true);
+                if (fadeOverlay != null)
+                {
+                    _fadeOverlayCanvasGroup = fadeOverlay;
+                }
+            }
+        }
+
+        //-----------------------------------------------------------------------
+        private async UniTask<SceneLoaderService> InitializeSceneLoaderService()
+        {
+            var sceneLoaderService = new SceneLoaderService();
+            ServiceLocator.RegisterService<ISceneLoaderService>(sceneLoaderService);
+            await sceneLoaderService.InitializeAsync();
+            if (_fadeOverlayCanvasGroup != null)
+            {
+                sceneLoaderService.SetFadeOverlayCanvasGroup(_fadeOverlayCanvasGroup);
+            }
+            return sceneLoaderService;
         }
         
         //-----------------------------------------------------------------------
