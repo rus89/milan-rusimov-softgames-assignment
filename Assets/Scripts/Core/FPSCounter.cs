@@ -2,7 +2,7 @@ using Softgames.Utilities;
 using TMPro;
 using UnityEngine;
 
-namespace Softgames.Core
+namespace Softgames.Core.Services
 {
     public class FPSCounter : MonoBehaviour
     {

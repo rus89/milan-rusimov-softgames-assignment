@@ -1,7 +1,6 @@
 using Cysharp.Threading.Tasks;
 using Levels.AceOfShadows;
 using PrimeTween;
-using Softgames.Core;
 using Softgames.Core.Services;
 using TMPro;
 using UnityEngine;

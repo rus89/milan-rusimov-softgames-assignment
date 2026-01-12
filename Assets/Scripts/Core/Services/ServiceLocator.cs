@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Softgames.Utilities;
 
-namespace Softgames.Core
+namespace Softgames.Core.Services
 {
     public static class ServiceLocator
     {

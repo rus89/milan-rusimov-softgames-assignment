@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Softgames.Core
+namespace Softgames.Core.Services
 {
 	public class CameraAspectHandler : MonoBehaviour
 	{
