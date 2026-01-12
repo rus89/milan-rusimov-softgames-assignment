@@ -68,12 +68,14 @@ namespace Softgames.Core
         private async UniTask<SceneLoaderService> InitializeSceneLoaderService()
         {
             var sceneLoaderService = new SceneLoaderService();
-            ServiceLocator.RegisterService<ISceneLoaderService>(sceneLoaderService);
-            await sceneLoaderService.InitializeAsync();
+            
             if (_fadeOverlayCanvasGroup != null)
             {
                 sceneLoaderService.SetFadeOverlayCanvasGroup(_fadeOverlayCanvasGroup);
             }
+            
+            ServiceLocator.RegisterService<ISceneLoaderService>(sceneLoaderService);
+            await sceneLoaderService.InitializeAsync();
             return sceneLoaderService;
         }
         
